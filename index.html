@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>InterviewIQ - AI Interview Simulator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+            color:white;
+            min-height:100vh;
+        }
+
+        header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:20px 60px;
+            background:rgba(0,0,0,0.3);
+            backdrop-filter:blur(10px);
+        }
+
+        header h1{
+            color:#00ffd5;
+        }
+
+        .container{
+            max-width:900px;
+            margin:60px auto;
+            padding:40px;
+            background:rgba(255,255,255,0.05);
+            border-radius:20px;
+            backdrop-filter:blur(15px);
+            box-shadow:0 0 40px rgba(0,0,0,0.3);
+        }
+
+        h2{
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+        select, textarea, button{
+            width:100%;
+            padding:12px;
+            margin:15px 0;
+            border:none;
+            border-radius:10px;
+            outline:none;
+        }
+
+        select{
+            background:#ffffff;
+            color:black;
+        }
+
+        textarea{
+            min-height:120px;
+            resize:none;
+        }
+
+        button{
+            background:#00ffd5;
+            font-weight:bold;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        button:hover{
+            background:white;
+            color:black;
+        }
+
+        .question-box{
+            margin-top:20px;
+            font-size:18px;
+            font-weight:500;
+        }
+
+        .score{
+            margin-top:20px;
+            font-size:20px;
+            font-weight:bold;
+            text-align:center;
+            color:#00ffd5;
+        }
+
+        .timer{
+            text-align:right;
+            font-size:14px;
+            opacity:0.8;
+        }
+
+        footer{
+            text-align:center;
+            padding:20px;
+            margin-top:60px;
+            opacity:0.7;
+        }
+
+        @media(max-width:768px){
+            .container{
+                margin:20px;
+                padding:20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>InterviewIQ</h1>
+    <p>AI-Powered Interview Practice Platform</p>
+</header>
+
+<div class="container">
+    <h2>Start Your Mock Interview</h2>
+
+    <label>Select Job Role:</label>
+    <select id="role">
+        <option>Software Developer</option>
+        <option>Data Analyst</option>
+        <option>HR Manager</option>
+        <option>Marketing Executive</option>
+    </select>
+
+    <button onclick="generateQuestion()">Generate Question</button>
+
+    <div class="timer" id="timer"></div>
+
+    <div class="question-box" id="question"></div>
+
+    <textarea id="answer" placeholder="Type your answer here..."></textarea>
+
+    <button onclick="evaluateAnswer()">Submit Answer</button>
+
+    <div class="score" id="score"></div>
+</div>
+
+<footer>
+    © 2026 InterviewIQ | Developed by Swathi 💼✨
+</footer>
+
+<script>
+
+let questions = {
+    "Software Developer":[
+        "Explain the difference between OOP and Functional Programming.",
+        "What is REST API and how does it work?",
+        "Explain time complexity with example."
+    ],
+    "Data Analyst":[
+        "What is the difference between supervised and unsupervised learning?",
+        "Explain data cleaning process.",
+        "What is correlation vs causation?"
+    ],
+    "HR Manager":[
+        "How do you handle workplace conflict?",
+        "What strategies improve employee engagement?",
+        "Explain recruitment lifecycle."
+    ],
+    "Marketing Executive":[
+        "How do you design a marketing campaign?",
+        "Explain digital marketing funnel.",
+        "What is brand positioning?"
+    ]
+};
+
+let currentQuestion = "";
+let timeLeft = 60;
+let timerInterval;
+
+function generateQuestion(){
+    let role = document.getElementById("role").value;
+    let roleQuestions = questions[role];
+    currentQuestion = roleQuestions[Math.floor(Math.random()*roleQuestions.length)];
+    document.getElementById("question").innerHTML = currentQuestion;
+    document.getElementById("score").innerHTML = "";
+    startTimer();
+}
+
+function startTimer(){
+    clearInterval(timerInterval);
+    timeLeft = 60;
+    document.getElementById("timer").innerHTML = "Time Remaining: " + timeLeft + " seconds";
+    timerInterval = setInterval(function(){
+        timeLeft--;
+        document.getElementById("timer").innerHTML = "Time Remaining: " + timeLeft + " seconds";
+        if(timeLeft <= 0){
+            clearInterval(timerInterval);
+            document.getElementById("timer").innerHTML = "Time's Up!";
+        }
+    },1000);
+}
+
+function evaluateAnswer(){
+    let answer = document.getElementById("answer").value;
+    if(answer.length < 20){
+        document.getElementById("score").innerHTML = "Score: 4/10 - Try to elaborate more.";
+    }
+    else if(answer.length < 80){
+        document.getElementById("score").innerHTML = "Score: 7/10 - Good answer, can improve depth.";
+    }
+    else{
+        document.getElementById("score").innerHTML = "Score: 9/10 - Excellent structured response!";
+    }
+}
+
+</script>
+
+</body>
+</html>
